@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 import com.arman.storeDetails.constants.*
 
 @RestController
-@RequestMapping(BASE_URI)
+//@RequestMapping(BASE_URI)
 class StoreController {
 
     @Autowired
@@ -28,13 +28,12 @@ class StoreController {
     }
 
     @GetMapping(ALL_STORES_DATA)
-    fun getStore(): List<Store>{
-        return storeService.getStores()
+    fun getShop(@RequestParam(required = false)refDate:String?=null,@RequestParam(required = false)futureFlag:Boolean=false): List<Store>{
+        return storeService.getStores(refDate,futureFlag)
     }
 
     @GetMapping(STORE_BY_ID_DATA)
     fun getStoreById(@PathVariable storeId: Long): Any{
-
         return storeService.getStoreById(storeId)
 
     }

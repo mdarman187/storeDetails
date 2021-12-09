@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.auditing.CurrentDateTimeProvider
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
+import com.arman.storeDetails.constants.*
 
 @RestController
-@RequestMapping("store-service/v1")
+@RequestMapping(BASE_URI)
 class StoreController {
 
     @Autowired
@@ -18,20 +19,20 @@ class StoreController {
     @Autowired
     lateinit var storeRepository: StoreRepository
 
-    @PostMapping("/stores")
+    @PostMapping(ALL_STORES_DATA)
     fun save(@RequestBody store: Store):String{
         store.createdAt = LocalDateTime.now()
         store.lastUpdated = LocalDateTime.now()
         storeRepository.save(store)
-        return "Data Successfully Saved"
+        return DATA_SAVED
     }
 
-    @GetMapping("/stores")
+    @GetMapping(ALL_STORES_DATA)
     fun getStore(): List<Store>{
         return storeService.getStores()
     }
 
-    @GetMapping("/stores/{shopId}")
+    @GetMapping(STORE_BY_ID_DATA)
     fun getStoreById(@PathVariable storeId: Long): Any{
 
         return storeService.getStoreById(storeId)

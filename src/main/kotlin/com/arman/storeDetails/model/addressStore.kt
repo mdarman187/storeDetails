@@ -21,6 +21,4 @@ class AddressStore {
     var city : String?=null
     @Column
     var country : String?=null
-
-
 }

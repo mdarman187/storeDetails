@@ -11,24 +11,24 @@ import com.arman.storeDetails.constants.*
 
 @RestController
 //@RequestMapping(BASE_URI)
+
 class StoreController {
 
     @Autowired
     lateinit var storeService: StoreService
-
     @Autowired
     lateinit var storeRepository: StoreRepository
 
     @PostMapping(ALL_STORES_DATA)
     fun save(@RequestBody store: Store):String{
-        store.createdAt = LocalDateTime.now()
-        store.lastUpdated = LocalDateTime.now()
-        storeRepository.save(store)
-        return DATA_SAVED
+        return storeService.addStore(store)
     }
 
     @GetMapping(ALL_STORES_DATA)
     fun getShop(@RequestParam(required = false)refDate:String?=null,@RequestParam(required = false)futureFlag:Boolean=false): List<Store>{
+        if (refDate==null){
+            return storeRepository.findAll()
+        }
         return storeService.getStores(refDate,futureFlag)
     }
 

@@ -20,42 +20,10 @@ class StoreService {
     @Autowired
     lateinit var validation: Validation
 
-    fun getStores(refDate:String?,FutureFlag:Boolean): List<Store>{
-
-        val date:LocalDate?=validation.validDateFormat(refDate)
-        var result= storeRepository.findAll()
-
-        if(result.isEmpty())
-        {
-            throw NoSuchElementException()
-        }
-        return if(date==null) {
-            result
-        } else if (FutureFlag) {
-            futureData(result, date)
-        } else {
-            presentData(result, date)
-        }
-    }
-
-    fun presentData(result: List<Store>, date: LocalDate): List<Store>{
-
-        for(data in result)
-        {
-            data.addressPeriod=data.addressPeriod!!.filter{filterData->(filterData.dateValidFrom!! <=date&&(filterData.dateValidUntil==null||filterData.dateValidUntil!!>=date)||(filterData.dateValidFrom!! >=date&&(filterData.dateValidUntil==null||filterData.dateValidUntil!!>=date)))}
-        }
-
-        return result
-    }
-
-    fun futureData(result: List<Store>, date: LocalDate): List<Store>{
-
-        for(data in result)
-        {
-            data.addressPeriod=data.addressPeriod!!.filter{filterData->(filterData.dateValidFrom!! <=date&&(filterData.dateValidUntil==null||filterData.dateValidUntil!!>=date)||(filterData.dateValidFrom!! >=date&&(filterData.dateValidUntil==null||filterData.dateValidUntil!!>=date)))}
-        }
-
-        return result
+    fun getStores(refDate:String?,FutureFlag:Boolean): List<Any>
+    {
+        val date: LocalDate? = validation.validDateFormat(refDate)
+        return storeRepository.getStore(date, FutureFlag)
     }
 
     fun getStoreById(storeId: Long): Store{
